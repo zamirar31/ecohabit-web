@@ -16,7 +16,14 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+
+    /* === 👇 Habilita imports absolutos y alias 👇 === */
+    "baseUrl": ".",
+    "paths": {
+      "src/*": [ "src/*" ],
+      "@app/*": [ "src/app/*" ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

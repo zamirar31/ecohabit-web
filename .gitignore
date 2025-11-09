@@ -40,3 +40,30 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+@"
+# IDE / SO
+.vs/
+.vscode/
+.idea/
+.DS_Store
+
+# Node / Angular
+node_modules/
+dist/
+.angular/cache/
+
+# Firebase local caches
+.firebase/
+.firebase/*.cache
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+
+# Coverage / tests
+coverage/
+
+# Sistema
+Thumbs.db
+"@ | Out-File -Encoding utf8 .gitignore
