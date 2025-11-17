@@ -1,1 +1,176 @@
-<p>registro works!</p>
+<div class="registro-container">
+  <div class="registro-card">
+    <div class="registro-header">
+      <div class="logo">🌱</div>
+      <h1>Únete a EcoHabit</h1>
+      <p>Comienza tu viaje sostenible hoy</p>
+    </div>
+
+    <div class="progress-steps">
+      <div [class.step]="true" [class.active]="step >= 1" [class.completed]="step > 1">
+        <span class="step-number">1</span>
+        <span class="step-label">Datos</span>
+      </div>
+      <div class="progress-line" [class.completed]="step > 1"></div>
+      <div [class.step]="true" [class.active]="step >= 2" [class.completed]="step > 2">
+        <span class="step-number">2</span>
+        <span class="step-label">Seguridad</span>
+      </div>
+    </div>
+
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="registro-form">
+      
+      <div *ngIf="successMessage" class="success-message">
+        <span class="success-icon">✅</span>
+        {{ successMessage }}
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        <span class="error-icon">⚠️</span>
+        {{ error }}
+      </div>
+
+      <div *ngIf="step === 1" class="form-step">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="nombre"
+              formControlName="nombre"
+              placeholder="Juan Pérez"
+              class="form-input"
+              [class.error]="registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid"
+            />
+          </div>
+          <small *ngIf="registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid" class="error-text">
+            El nombre debe tener al menos 2 caracteres
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="tu@correo.com"
+              class="form-input"
+              [class.error]="registroForm.get('email')?.touched && registroForm.get('email')?.invalid"
+            />
+          </div>
+          <small *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.invalid" class="error-text">
+            Por favor ingresa un email válido
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Sobre ti (opcional)</label>
+          <textarea
+            id="bio"
+            formControlName="bio"
+            placeholder="Cuéntanos sobre ti y tus intereses ambientales"
+            class="form-input textarea"
+          ></textarea>
+        </div>
+      </div>
+
+      <div *ngIf="step === 2" class="form-step">
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="••••••••"
+              class="form-input"
+              [class.error]="registroForm.get('password')?.touched && registroForm.get('password')?.invalid"
+              (input)="onPasswordChange()"
+            />
+            <button type="button" class="toggle-password" (click)="togglePassword()">
+              {{ showPassword ? '👁️‍🗨️' : '👁️' }}
+            </button>
+          </div>
+          <small *ngIf="registroForm.get('password')?.touched && registroForm.get('password')?.invalid" class="error-text">
+            La contraseña debe tener al menos 8 caracteres
+          </small>
+          <div *ngIf="passwordStrength" [class]="'password-strength ' + passwordStrength">
+            Fortaleza: {{ passwordStrength }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="••••••••"
+              class="form-input"
+              [class.error]="registroForm.get('confirmPassword')?.touched && (registroForm.get('confirmPassword')?.invalid || registroForm.hasError('passwordMismatch'))"
+            />
+          </div>
+          <small *ngIf="registroForm.hasError('passwordMismatch') && registroForm.get('confirmPassword')?.touched" class="error-text">
+            Las contraseñas no coinciden
+          </small>
+        </div>
+
+        <div class="form-group checkboxes">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="terms" />
+            <span>Acepto los <a href="#">términos y condiciones</a></span>
+          </label>
+          <small *ngIf="registroForm.get('terms')?.touched && registroForm.get('terms')?.invalid" class="error-text">
+            Debes aceptar los términos para continuar
+          </small>
+
+          <label class="checkbox">
+            <input type="checkbox" formControlName="newsletter" />
+            <span>Quiero recibir consejos y actualizaciones por correo</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" *ngIf="step > 1" (click)="prevStep()">
+          ← Anterior
+        </button>
+
+        <button
+          type="button"
+          class="btn-primary"
+          *ngIf="step < 2"
+          (click)="nextStep()"
+          [disabled]="step === 1 && (registroForm.get('nombre')?.invalid || registroForm.get('email')?.invalid)"
+        >
+          Siguiente →
+        </button>
+
+        <button
+          type="submit"
+          class="btn-submit"
+          *ngIf="step === 2"
+          [disabled]="registroForm.invalid || loading"
+        >
+          <span *ngIf="!loading">Crear Cuenta</span>
+          <span *ngIf="loading" class="loading-spinner">Creando...</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="login-link">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </div>
+  </div>
+
+  <div class="decoration flower-1">🌻</div>
+  <div class="decoration flower-2">🌻</div>
+</div>
+

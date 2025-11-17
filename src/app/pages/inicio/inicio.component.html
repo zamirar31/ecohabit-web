@@ -1,2 +1,177 @@
-<h1>EcoHabit Web</h1>
-<p>Promueve hábitos sostenibles en CEUTEC.</p>
+<div class="inicio-hero">
+
+  <nav class="inicio-navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <span class="brand-icon">🌿</span>
+        <a routerLink="/" class="brand-text">EcoHabit</a>
+      </div>
+      
+      <div class="navbar-auth">
+        <a routerLink="/login" class="btn btn-outline btn-sm">🔑 Login</a>
+        <a routerLink="/registro" class="btn btn-primary btn-sm">✨ Registrarse</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-section" [style]="'--parallax: ' + parallaxOffset + 'px'">
+
+    <div class="parallax-layer layer-bg" [style.transform]="'translateY(' + (parallaxOffset * 0.8) + 'px)'">
+      <div class="gradient-blob blob-1"></div>
+      <div class="gradient-blob blob-2"></div>
+    </div>
+
+    <div class="parallax-layer layer-mid" [style.transform]="'translateY(' + (parallaxOffset * 0.5) + 'px)'">
+      <div class="floating-elements">
+        <div class="element element-1">🌍</div>
+        <div class="element element-2">🌱</div>
+        <div class="element element-3">💚</div>
+        <div class="element element-4">🌿</div>
+        <div class="element element-5">✨</div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge animate-zoom">
+        ✨ Bienvenido a EcoHabit
+      </div>
+      
+      <h1 class="hero-title animate-in" style="animation-delay: 0.1s">
+        Transforma tu Vida,<br>
+        <span class="gradient-text">Salva el Planeta</span>
+      </h1>
+      
+      <p class="hero-subtitle animate-in" style="animation-delay: 0.2s">
+        Cultiva hábitos sostenibles en CEUTEC y sé parte del cambio ecológico.
+        Cada pequeña acción cuenta.
+      </p>
+      
+      <div class="hero-actions animate-in" style="animation-delay: 0.3s">
+        <a routerLink="/registro" class="btn btn-primary btn-lg">
+          <span>🚀 Comenzar Ahora</span>
+        </a>
+        <button class="btn btn-outline btn-lg" (click)="scrollToFeatures()">
+          <span>📖 Aprende Más</span>
+        </button>
+      </div>
+
+      <div class="hero-stats animate-in" style="animation-delay: 0.4s">
+        <div class="stat-item" *ngFor="let stat of stats">
+          <div class="stat-number">{{ stat.number }}</div>
+          <div class="stat-icon">{{ stat.icon }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual parallax-layer layer-front" [style.transform]="'translateY(' + (parallaxOffset * 0.3) + 'px)'">
+      <div class="floating-eco-sphere">
+        <div class="sphere-inner"></div>
+        <div class="sphere-ring"></div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator parallax-layer" [style.transform]="'translateY(' + (parallaxOffset * 0.2) + 'px)'">
+      <div class="scroll-arrow">
+        <span>↓</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="section-header">
+      <span class="section-badge">✨ Características</span>
+      <h2 class="section-title">¿Por qué elegir EcoHabit?</h2>
+      <p class="section-subtitle">Descubre todo lo que puedes lograr con nuestra plataforma</p>
+    </div>
+    
+    <div class="container">
+      <div class="grid grid-3">
+        <div class="feature-card" *ngFor="let feature of features; let i = index" [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+          <div class="feature-dots"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="howworks-section">
+    <div class="section-header">
+      <span class="section-badge">🎯 Proceso</span>
+      <h2 class="section-title">Cómo Funciona</h2>
+      <p class="section-subtitle">Cuatro pasos simples para comenzar tu viaje eco</p>
+    </div>
+
+    <div class="container">
+      <div class="steps-container">
+        <div *ngFor="let step of steps; let i = index" [attr.data-step]="i + 1">
+          <div class="step-item">
+            <div class="step-badge">
+              <span class="step-number">{{ step.number }}</span>
+            </div>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.description }}</p>
+            <div class="step-icon">{{ step.icon }}</div>
+          </div>
+          
+          <div class="step-divider" *ngIf="i < steps.length - 1"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="impact-section">
+    <div class="section-header">
+      <span class="section-badge">🌍 Impacto</span>
+      <h2 class="section-title">Nuestro Impacto Global</h2>
+      <p class="section-subtitle">Mira lo que juntos hemos logrado para el planeta</p>
+    </div>
+
+    <div class="container">
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-number">🌳</div>
+          <div class="impact-value">10,000+</div>
+          <div class="impact-label">Árboles Plantados</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-number">💧</div>
+          <div class="impact-value">1M+</div>
+          <div class="impact-label">Litros de Agua Ahorrados</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-number">♻️</div>
+          <div class="impact-value">50T+</div>
+          <div class="impact-label">Residuos Reciclados</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-number">🌍</div>
+          <div class="impact-value">75+</div>
+          <div class="impact-label">Países Participantes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-background" [style.transform]="'translateY(' + (parallaxOffset * 0.3) + 'px)'"></div>
+    
+    <div class="cta-content">
+      <h2>¿Listo para el Cambio?</h2>
+      <p>Únete a miles de personas que ya están haciendo la diferencia</p>
+      
+      <div class="cta-actions">
+        <a routerLink="/registro" class="btn btn-primary btn-lg animate-pulse">
+          <span>🚀 Comenzar mi Viaje Eco</span>
+        </a>
+        <a routerLink="/login" class="btn btn-outline-light btn-lg">
+          <span>🔑 Ya tengo cuenta</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+

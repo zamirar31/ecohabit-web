@@ -1,0 +1,360 @@
+// ============================================
+// NAVBAR PREMIUM - MOBILE FIRST
+// ============================================
+
+.eco-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  animation: slideInDown 0.6s ease;
+  position: relative;
+
+  .navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+    
+    // Tablets
+    @media (min-width: 480px) {
+      padding: 1rem 1.5rem;
+      gap: 1.5rem;
+    }
+    
+    // Desktop
+    @media (min-width: 768px) {
+      max-width: 1400px;
+      padding: 1rem 2rem;
+      gap: 2rem;
+    }
+  }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+
+    .brand-icon {
+      font-size: 1.25rem;
+      animation: float 3s ease-in-out infinite;
+      
+      @media (min-width: 480px) {
+        font-size: 1.5rem;
+      }
+    }
+
+    .brand-text {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--eco-primary-light), var(--eco-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+      transition: all var(--eco-transition-smooth);
+      text-decoration: none;
+
+      @media (min-width: 480px) {
+        font-size: 1.5rem;
+      }
+
+      &:hover {
+        filter: brightness(1.2);
+      }
+    }
+  }
+
+  // Menu - Oculto en móvil, visible en desktop
+  .navbar-menu {
+    display: none;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    flex: 1;
+    justify-content: center;
+
+    // Mostrar en desktop
+    @media (min-width: 768px) {
+      display: flex;
+    }
+
+    li {
+      position: relative;
+
+      a {
+        display: block;
+        padding: 0.75rem 1.2rem;
+        color: var(--eco-gray-300);
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all var(--eco-transition-smooth);
+        position: relative;
+        text-decoration: none;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 2px;
+          background: linear-gradient(90deg, var(--eco-primary), var(--eco-primary-light));
+          transform: translateX(-50%);
+          transition: width var(--eco-transition-smooth);
+        }
+
+        &:hover {
+          color: var(--eco-primary-light);
+
+          &::after {
+            width: calc(100% - 2.4rem);
+          }
+        }
+
+        &.active {
+          color: var(--eco-primary);
+
+          &::after {
+            width: calc(100% - 2.4rem);
+          }
+        }
+      }
+    }
+  }
+
+  // Botones de autenticación - MOBILE FIRST
+  .navbar-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    
+    // Tablets
+    @media (min-width: 480px) {
+      gap: 0.75rem;
+    }
+    
+    // Desktop
+    @media (min-width: 768px) {
+      gap: 1rem;
+      padding-left: 2rem;
+      border-left: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .btn {
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all var(--eco-transition-smooth);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.8rem;
+      
+      @media (min-width: 480px) {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        border-radius: 0.75rem;
+      }
+
+      &.btn-sm {
+        @media (min-width: 480px) {
+          padding: 0.6rem 1.2rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      &.btn-outline {
+        background: transparent;
+        border: 1.5px solid rgba(16, 185, 129, 0.5);
+        color: var(--eco-primary-light);
+
+        &:hover {
+          background: rgba(16, 185, 129, 0.1);
+          border-color: var(--eco-primary);
+          color: var(--eco-primary);
+          box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+      }
+
+      &.btn-primary {
+        background: linear-gradient(135deg, var(--eco-primary) 0%, var(--eco-success) 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+
+        &:hover {
+          box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+
+  // Botón hamburguesa - MOBILE FIRST (visible solo en móvil)
+  .navbar-mobile-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    transition: transform var(--eco-transition-smooth);
+
+    &.active {
+      transform: rotate(90deg);
+    }
+
+    span {
+      width: 24px;
+      height: 2px;
+      background: var(--eco-primary-light);
+      border-radius: 2px;
+      transition: all var(--eco-transition-smooth);
+    }
+
+    &.active span:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+
+    &.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    &.active span:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+
+    // Ocultar en desktop
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+// ============================================
+// MOBILE MENU DROPDOWN
+// ============================================
+
+.navbar-mobile-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 0 0 0.75rem 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  animation: slideDown 0.3s ease-out;
+  backdrop-filter: blur(20px);
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0;
+
+      a {
+        display: block;
+        padding: 1rem 1rem;
+        color: var(--eco-gray-300);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        transition: all var(--eco-transition-smooth);
+        font-weight: 500;
+        font-size: 0.95rem;
+
+        &:hover,
+        &.active {
+          background-color: rgba(16, 185, 129, 0.15);
+          color: var(--eco-primary-light);
+          padding-left: 1.5rem;
+        }
+      }
+
+      &.divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+        margin: 0.5rem 0;
+      }
+
+      .mobile-logout {
+        width: 100%;
+        padding: 1rem;
+        background: none;
+        border: none;
+        border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        color: var(--eco-gray-300);
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all var(--eco-transition-smooth);
+        text-align: left;
+
+        &:hover {
+          background-color: rgba(16, 185, 129, 0.15);
+          color: var(--eco-primary-light);
+          padding-left: 1.5rem;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+// ============================================
+// ANIMACIONES
+// ============================================
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+

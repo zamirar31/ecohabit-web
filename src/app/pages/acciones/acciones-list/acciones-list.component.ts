@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ActionsService } from '../../../ services/actions.service';
@@ -8,23 +8,10 @@ import { Action } from '../../../models/action.model';
   selector: 'app-acciones-list',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  template: `
-    <div class="wrap">
-      <h2>Acciones registradas</h2>
-      <a routerLink="/acciones/nuevo">+ Nueva acción</a>
-
-      <ul>
-        <li *ngFor="let a of acciones">
-          <b>{{ a.type }}</b> - {{ a.points }} pts - {{ a.date }}
-          <div><small>Usuario: {{ a.userId }}</small></div>
-          <a [routerLink]="['/acciones/editar', a.id]">Editar</a>
-          <button (click)="eliminar(a.id!)">Eliminar</button>
-        </li>
-      </ul>
-    </div>
-  `
+  templateUrl: './acciones-list.component.html',
+  styleUrls: ['./acciones-list.component.scss']
 })
-export class AccionesListComponent {
+export class AccionesListComponent implements OnInit {
   private service = inject(ActionsService);
   acciones: Action[] = [];
 

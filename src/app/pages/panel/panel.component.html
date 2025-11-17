@@ -1,1 +1,140 @@
-<p>panel works!</p>
+
+<div class="panel-container">
+  
+  <div class="panel-header">
+    <div class="header-content">
+      <h1>Mi Panel Eco</h1>
+      <p>Bienvenido a tu espacio de seguimiento ambiental</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-card">
+        <div class="stat-icon">🌿</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ userStats.points | number }}</div>
+          <div class="stat-label">Puntos Eco</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ userStats.challengesCompleted }}</div>
+          <div class="stat-label">Retos Completados</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ userStats.level }}</div>
+          <div class="stat-label">Nivel Actual</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-content">
+    
+    <section class="panel-section">
+      <div class="section-header">
+        <h2>📈 Tu Progreso</h2>
+      </div>
+      <div class="progress-grid">
+        <div class="progress-item">
+          <div class="progress-title">Nivel Actual: {{ userStats.level }}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%"></div>
+          </div>
+          <div class="progress-text">1,875 / 2,500 pts para próximo nivel</div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-title">Racha Semanal</div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(userStats.streak / 7) * 100"></div>
+          </div>
+          <div class="progress-text">{{ userStats.streak }} días seguidos - ¡Excelente!</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <div class="section-header">
+        <h2>✨ Actividad Reciente</h2>
+        <a href="#" class="link-see-more">Ver todo →</a>
+      </div>
+      <div class="activity-list">
+        <div *ngFor="let activity of recentActivity; let i = index" class="activity-item" [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="activity-icon">{{ activity.icon }}</div>
+          <div class="activity-info">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-time">{{ activity.time }}</div>
+          </div>
+          <div class="activity-points">+{{ activity.points }} pts</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <div class="section-header">
+        <h2>🎯 Acciones Rápidas</h2>
+      </div>
+      <div class="quick-actions">
+        <a href="/acciones" class="quick-action-card">
+          <div class="action-icon">📝</div>
+          <div class="action-text">
+            <div class="action-title">Mis Acciones</div>
+            <div class="action-desc">Ver y gestionar mis acciones</div>
+          </div>
+        </a>
+        <a href="/retos" class="quick-action-card">
+          <div class="action-icon">🏆</div>
+          <div class="action-text">
+            <div class="action-title">Retos Activos</div>
+            <div class="action-desc">Participa en nuevos desafíos</div>
+          </div>
+        </a>
+        <a href="#" class="quick-action-card">
+          <div class="action-icon">🎓</div>
+          <div class="action-text">
+            <div class="action-title">Aprende Más</div>
+            <div class="action-desc">Contenido educativo eco</div>
+          </div>
+        </a>
+        <a href="#" class="quick-action-card">
+          <div class="action-icon">👥</div>
+          <div class="action-text">
+            <div class="action-title">Comunidad</div>
+            <div class="action-desc">Conecta con otros usuarios</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <div class="section-header">
+        <h2>🌍 Tu Impacto</h2>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-number">🌳</div>
+          <div class="impact-value">{{ impact.trees }}</div>
+          <div class="impact-label">Árboles Plantados</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-number">💧</div>
+          <div class="impact-value">{{ impact.water }}</div>
+          <div class="impact-label">Agua Ahorrada</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-number">♻️</div>
+          <div class="impact-value">{{ impact.waste }}</div>
+          <div class="impact-label">Residuos Reciclados</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-number">⚡</div>
+          <div class="impact-value">{{ impact.energy }}</div>
+          <div class="impact-label">Energía Ahorrada</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+

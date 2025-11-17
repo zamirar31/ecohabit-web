@@ -1,0 +1,56 @@
+<nav class="eco-navbar">
+  <div class="navbar-container">
+    
+    <div class="navbar-brand">
+      <span class="brand-icon">🌿</span>
+      <a routerLink="/" class="brand-text">EcoHabit</a>
+    </div>
+
+    <ul class="navbar-menu" *ngIf="isAuthenticated$ | async">
+      <li><a routerLink="/app/panel" routerLinkActive="active">Panel</a></li>
+      <li><a routerLink="/app/acciones" routerLinkActive="active">Acciones</a></li>
+      <li><a routerLink="/app/retos" routerLinkActive="active">Retos</a></li>
+    </ul>
+
+    <div class="navbar-auth">
+      
+      <button *ngIf="isAuthenticated$ | async" 
+              (click)="logout()" 
+              class="btn btn-outline btn-sm">
+        🚪 Logout
+      </button>
+
+      <ng-container *ngIf="!(isAuthenticated$ | async)">
+        <a routerLink="/login" class="btn btn-outline btn-sm">🔑 Login</a>
+        <a routerLink="/registro" class="btn btn-primary btn-sm">✨ Registrarse</a>
+      </ng-container>
+    </div>
+
+    <button class="navbar-mobile-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="navbar-mobile-menu" *ngIf="isMenuOpen">
+    
+    <ul *ngIf="isAuthenticated$ | async" class="mobile-menu-list">
+      <li><a routerLink="/app/panel" routerLinkActive="active" (click)="closeMenu()">📊 Panel</a></li>
+      <li><a routerLink="/app/acciones" routerLinkActive="active" (click)="closeMenu()">✨ Acciones</a></li>
+      <li><a routerLink="/app/retos" routerLinkActive="active" (click)="closeMenu()">🏆 Retos</a></li>
+      <li class="divider"></li>
+      <li>
+        <button (click)="logout()" class="mobile-logout">
+          🚪 Logout
+        </button>
+      </li>
+    </ul>
+
+    <ul *ngIf="!(isAuthenticated$ | async)" class="mobile-menu-list">
+      <li><a routerLink="/login" (click)="closeMenu()">🔑 Login</a></li>
+      <li><a routerLink="/registro" (click)="closeMenu()">✨ Registrarse</a></li>
+    </ul>
+  </div>
+</nav>
+

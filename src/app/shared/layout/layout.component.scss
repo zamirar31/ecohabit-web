@@ -1,0 +1,227 @@
+// ============================================
+// LAYOUT COMPONENT - MOBILE FIRST
+// ============================================
+
+// Fondo animado con gradiente dinámico
+.eco-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    -45deg,
+    #0f172a 0%,
+    #1a3a4a 25%,
+    #0d3b3b 50%,
+    #1e293b 75%,
+    #0f172a 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  z-index: -10;
+  pointer-events: none;
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+// Contenedor de partículas - MOBILE FIRST
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+// Partículas flotantes - Menos en móvil, más en desktop
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, var(--eco-primary), transparent);
+  border-radius: 50%;
+  opacity: 0.4;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+  
+  @media (min-width: 480px) {
+    width: 4px;
+    height: 4px;
+    opacity: 0.5;
+  }
+  
+  @media (min-width: 768px) {
+    opacity: 0.6;
+  }
+
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      $delay: $i * 0.5s;
+      $duration: 5s + $i * 1s;
+      $left: random(100) * 1%;
+      $top: random(100) * 1%;
+      
+      left: $left;
+      top: $top;
+      animation: float $duration ease-in-out infinite;
+      animation-delay: $delay;
+      width: random(6) + 2px;
+      height: width;
+      opacity: 0.3 + calc(random(6) / 10);
+      
+      @media (min-width: 480px) {
+        opacity: 0.4 + calc(random(6) / 10);
+      }
+    }
+  }
+}
+
+// Contenedor de hojas
+.leaves-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+// Hojas cayendo - MOBILE FIRST
+.leaf {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.2;
+  pointer-events: none;
+
+  @media (min-width: 480px) {
+    font-size: 2rem;
+    opacity: 0.25;
+  }
+  
+  @media (min-width: 768px) {
+    opacity: 0.3;
+  }
+
+  &.leaf-1 {
+    left: 10%;
+    animation: fallingleaves 12s linear infinite;
+    animation-delay: 0s;
+  }
+
+  &.leaf-2 {
+    left: 30%;
+    animation: fallingleaves 14s linear infinite;
+    animation-delay: 2s;
+    
+    @media (min-width: 480px) {
+      font-size: 2.5rem;
+    }
+  }
+
+  &.leaf-3 {
+    left: 50%;
+    animation: fallingleaves 13s linear infinite;
+    animation-delay: 4s;
+    font-size: 1.8rem;
+    
+    @media (min-width: 480px) {
+      font-size: 2rem;
+    }
+  }
+
+  &.leaf-4 {
+    left: 70%;
+    animation: fallingleaves 15s linear infinite;
+    animation-delay: 1s;
+    font-size: 1.8rem;
+    opacity: 0.15;
+    
+    @media (min-width: 480px) {
+      font-size: 2.2rem;
+      opacity: 0.2;
+    }
+  }
+
+  &.leaf-5 {
+    left: 90%;
+    animation: fallingleaves 11s linear infinite;
+    animation-delay: 3s;
+    font-size: 1.6rem;
+    
+    @media (min-width: 480px) {
+      font-size: 1.9rem;
+    }
+  }
+}
+
+// ============================================
+// CONTENIDO PRINCIPAL - MOBILE FIRST
+// ============================================
+
+.eco-main {
+  position: relative;
+  z-index: 100;
+  min-height: calc(100vh - 70px);
+  animation: fadein 0.8s ease;
+  padding: var(--eco-spacing-md);
+  
+  @media (min-width: 480px) {
+    padding: var(--eco-spacing-lg);
+  }
+  
+  @media (min-width: 768px) {
+    padding: var(--eco-spacing-xl);
+  }
+}
+
+// ============================================
+// KEYFRAMES ANIMATIONS
+// ============================================
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+@keyframes fallingleaves {
+  0% {
+    top: -10%;
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+    transform: translateX(100px) rotateZ(360deg);
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
