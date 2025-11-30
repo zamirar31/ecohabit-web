@@ -1,4 +1,4 @@
-// src/app/pages/retos/retos-form/retos-form.component.ts
+
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -78,3 +78,4 @@ export class RetosFormComponent {
     this.router.navigateByUrl('/retos');
   }
 }
+

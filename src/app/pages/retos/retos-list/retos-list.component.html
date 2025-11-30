@@ -1,1 +1,81 @@
-<p>retos-list works!</p>
+
+<div class="retos-container">
+  
+  <div class="retos-header">
+    <div class="header-content">
+      <h1>🏆 Retos Ecológicos</h1>
+      <p>Participa en desafíos para transformar el mundo</p>
+    </div>
+    <a routerLink="/retos/nuevo" class="btn btn-primary btn-lg">
+      <span>➕ Nuevo Reto</span>
+    </a>
+  </div>
+
+  <div class="retos-tabs">
+    <button class="tab-btn active">Todos</button>
+    <button class="tab-btn">Activos</button>
+    <button class="tab-btn">Completados</button>
+    <button class="tab-btn">Próximos</button>
+  </div>
+
+  <div class="retos-grid" *ngIf="retos.length > 0; else noRetos">
+    <div class="reto-card" *ngFor="let r of retos" [class.completed]="!r.active">
+      
+      <div class="reto-status">
+        <span class="status-badge" [class.active]="r.active" [class.inactive]="!r.active">
+          {{ r.active ? '🟢 Activo' : '⚪ Inactivo' }}
+        </span>
+      </div>
+
+      <div class="reto-content">
+        <h3 class="reto-name">{{ r.name }}</h3>
+        
+        <p class="reto-description" *ngIf="r.description">
+          {{ r.description }}
+        </p>
+
+        <div class="reto-info">
+          <div class="info-item">
+            <span class="info-label">Puntos:</span>
+            <span class="info-value">{{ r.points }} pts</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Período:</span>
+            <span class="info-value">{{ r.startDate }} → {{ r.endDate }}</span>
+          </div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-label">
+            <span>Progreso</span>
+            <span class="progress-percent">75%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reto-actions">
+        <a [routerLink]="['/retos/editar', r.id]" class="btn-action btn-edit">
+          ✏️ Editar
+        </a>
+        <button (click)="eliminar(r.id!)" class="btn-action btn-delete">
+          🗑️ Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noRetos>
+    <div class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <h2>No hay retos disponibles</h2>
+      <p>Crea tu primer reto y comienza a inspirar a la comunidad</p>
+      <a routerLink="/retos/nuevo" class="btn btn-primary">
+        Crear primer reto
+      </a>
+    </div>
+  </ng-template>
+</div>
+
