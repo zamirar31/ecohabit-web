@@ -1,6 +1,5 @@
-
 <div class="panel-container">
-  
+
   <div class="panel-header">
     <div class="header-content">
       <h1>Mi Panel Eco</h1>
@@ -32,7 +31,8 @@
   </div>
 
   <div class="panel-content">
-    
+
+    <!-- PROGRESO -->
     <section class="panel-section">
       <div class="section-header">
         <h2>📈 Tu Progreso</h2>
@@ -55,13 +55,16 @@
       </div>
     </section>
 
+    <!-- ACTIVIDAD RECIENTE -->
     <section class="panel-section">
       <div class="section-header">
         <h2>✨ Actividad Reciente</h2>
         <a href="#" class="link-see-more">Ver todo →</a>
       </div>
       <div class="activity-list">
-        <div *ngFor="let activity of recentActivity; let i = index" class="activity-item" [style.animation-delay]="(i * 0.1) + 's'">
+        <div *ngFor="let activity of recentActivity; let i = index"
+             class="activity-item"
+             [style.animation-delay]="(i * 0.1) + 's'">
           <div class="activity-icon">{{ activity.icon }}</div>
           <div class="activity-info">
             <div class="activity-title">{{ activity.title }}</div>
@@ -72,33 +75,38 @@
       </div>
     </section>
 
+    <!-- ACCIONES RÁPIDAS -->
     <section class="panel-section">
       <div class="section-header">
         <h2>🎯 Acciones Rápidas</h2>
       </div>
+
       <div class="quick-actions">
-        <a href="/acciones" class="quick-action-card">
+        <a routerLink="/app/acciones" class="quick-action-card">
           <div class="action-icon">📝</div>
           <div class="action-text">
             <div class="action-title">Mis Acciones</div>
             <div class="action-desc">Ver y gestionar mis acciones</div>
           </div>
         </a>
-        <a href="/retos" class="quick-action-card">
+
+        <a routerLink="/app/retos" class="quick-action-card">
           <div class="action-icon">🏆</div>
           <div class="action-text">
             <div class="action-title">Retos Activos</div>
             <div class="action-desc">Participa en nuevos desafíos</div>
           </div>
         </a>
-        <a href="#" class="quick-action-card">
+
+        <a routerLink="/app/aprende" class="quick-action-card">
           <div class="action-icon">🎓</div>
           <div class="action-text">
             <div class="action-title">Aprende Más</div>
             <div class="action-desc">Contenido educativo eco</div>
           </div>
         </a>
-        <a href="#" class="quick-action-card">
+
+        <a routerLink="/app/comunidad" class="quick-action-card">
           <div class="action-icon">👥</div>
           <div class="action-text">
             <div class="action-title">Comunidad</div>
@@ -108,6 +116,7 @@
       </div>
     </section>
 
+    <!-- IMPACTO -->
     <section class="panel-section">
       <div class="section-header">
         <h2>🌍 Tu Impacto</h2>
@@ -135,6 +144,7 @@
         </div>
       </div>
     </section>
+
   </div>
 </div>
 

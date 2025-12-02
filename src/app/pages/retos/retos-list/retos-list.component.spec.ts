@@ -1,23 +1,36 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// src/app/pages/retos/retos-list/retos-list.component.ts
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { ChallengesService } from '../../../ services/challenges.service';
+import { Challenge } from '../../../models/challenge.model';
 
-import { RetosListComponent } from './retos-list.component';
+@Component({
+  selector: 'app-retos-list',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './retos-list.component.html',
+  styleUrls: ['./retos-list.component.scss']
+})
+export class RetosListComponent implements OnInit {
+  private service = inject(ChallengesService);
+  retos: Challenge[] = [];
 
-describe('RetosListComponent', () => {
-  let component: RetosListComponent;
-  let fixture: ComponentFixture<RetosListComponent>;
+  ngOnInit(): void {
+    this.service.list().subscribe({
+      next: (rows: Challenge[]) => {
+        console.log('Retos desde Firestore:', rows);
+        this.retos = rows;
+      },
+      error: (err: any) => console.error('Error list() retos', err)
+    });
+  }
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RetosListComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(RetosListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  async eliminar(id: string): Promise<void> {
+    try {
+      await this.service.remove(id);
+    } catch (e) {
+      console.error('Error remove() reto', e);
+    }
+  }
+}

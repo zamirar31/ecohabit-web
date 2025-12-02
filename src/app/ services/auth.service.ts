@@ -1,7 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+// src/app/services/auth.service.ts
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { 
-  Auth, 
+import {
+  Auth,
   authState,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -15,37 +16,33 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private auth: Auth;
-  private router: Router;
-
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-  
+
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(auth: Auth, router: Router) {
-    this.auth = auth;
-    this.router = router;
-    
+  constructor(
+    private auth: Auth,
+    private router: Router
+  ) {
     authState(this.auth).subscribe(user => {
       this.isAuthenticatedSubject.next(!!user);
       this.currentUserSubject.next(user);
     });
   }
 
-  isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
-  }
-
-  getCurrentUser(): any {
-    return this.currentUserSubject.value;
-  }
-
+  /** observable booleando para el navbar */
   getAuthState(): Observable<boolean> {
     return this.isAuthenticated$;
   }
 
+  /** usuario actual (para mostrar nombre, etc.) */
+  getCurrentUser(): any {
+    return this.currentUserSubject.value;
+  }
+
+  /** login */
   async login(email: string, password: string): Promise<UserCredential> {
     try {
       const result = await signInWithEmailAndPassword(this.auth, email, password);
@@ -56,6 +53,7 @@ export class AuthService {
     }
   }
 
+  /** registro */
   async register(
     email: string,
     password: string,
@@ -69,7 +67,7 @@ export class AuthService {
           displayName: nombre
         });
       }
-      
+
       this.router.navigate(['/app/panel']);
       return result;
     } catch (error: any) {
@@ -77,6 +75,7 @@ export class AuthService {
     }
   }
 
+  /** logout */
   async logout(): Promise<void> {
     try {
       await signOut(this.auth);
@@ -86,9 +85,11 @@ export class AuthService {
     }
   }
 
+  /** mapeo de errores de Firebase a mensajes amigables */
   private handleAuthError(error: any): Error {
-    console.error('Firebase Auth Error:', error); 
+    console.error('Firebase Auth Error:', error);
     const errorCode = error.code || error.message;
+
     const errorMessages: { [key: string]: string } = {
       'auth/user-not-found': 'Usuario no encontrado. Verifica tu email.',
       'auth/wrong-password': 'Contraseña incorrecta. Intenta de nuevo.',
@@ -97,11 +98,13 @@ export class AuthService {
       'auth/email-already-in-use': 'Este email ya está registrado.',
       'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
       'auth/user-disabled': 'Esta cuenta ha sido deshabilitada.',
-      'auth/operation-not-allowed': 'Esta operación no está permitida. Verifica que Email/Password esté habilitado en Firebase Console → Authentication → Sign-in methods.',
+      'auth/operation-not-allowed': 'Este tipo de inicio de sesión no está habilitado en Firebase Console → Authentication → Sign-in methods.',
       'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde.'
     };
-    
-    const message = errorMessages[errorCode] || `Error de autenticación: ${error.message || 'Intenta de nuevo.'}`;
+
+    const message =
+      errorMessages[errorCode] ||
+      `Error de autenticación: ${error.message || 'Intenta de nuevo.'}`;
     return new Error(message);
   }
 }
