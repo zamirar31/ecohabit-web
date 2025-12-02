@@ -1,10 +1,11 @@
-
+// src/app/pages/retos/retos-form/retos-form.component.ts
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ChallengesService } from '../../../ services/challenges.service';
 import { Challenge } from '../../../models/challenge.model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-retos-form',
@@ -15,35 +16,60 @@ import { Challenge } from '../../../models/challenge.model';
       <h2>{{ id ? 'Editar' : 'Nuevo' }} reto</h2>
 
       <form (ngSubmit)="guardar()">
-        <label>Nombre
-          <input [(ngModel)]="model.name" name="name" required />
+        <label>Nombre del reto
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="model.name"
+            required />
         </label>
 
         <label>Descripción
-          <textarea [(ngModel)]="model.description" name="description"></textarea>
+          <textarea
+            name="description"
+            [(ngModel)]="model.description"
+            rows="3">
+          </textarea>
         </label>
 
         <label>Puntos
-          <input type="number" [(ngModel)]="model.points" name="points" required />
+          <input
+            type="number"
+            name="points"
+            [(ngModel)]="model.points"
+            required />
         </label>
 
-        <label>Fecha inicio
-          <input type="date" [(ngModel)]="model.startDate" name="startDate" required />
+        <label>Fecha de inicio
+          <input
+            type="date"
+            name="startDate"
+            [(ngModel)]="model.startDate"
+            required />
         </label>
 
-        <label>Fecha fin
-          <input type="date" [(ngModel)]="model.endDate" name="endDate" required />
+        <label>Fecha de fin
+          <input
+            type="date"
+            name="endDate"
+            [(ngModel)]="model.endDate"
+            required />
         </label>
 
-        <label>Activo
-          <input type="checkbox" [(ngModel)]="model.active" name="active" />
+        <label class="chk-inline">
+          <input
+            type="checkbox"
+            name="active"
+            [(ngModel)]="model.active" />
+          Activo
         </label>
 
         <button type="submit">Guardar</button>
-        <a routerLink="/retos">Cancelar</a>
+        <a routerLink="/app/retos">Cancelar</a>
       </form>
     </div>
-  `
+  `,
+  styleUrls: ['./retos-form.component.scss']
 })
 export class RetosFormComponent {
   private service = inject(ChallengesService);
@@ -61,21 +87,34 @@ export class RetosFormComponent {
     active: true
   };
 
-  ngOnInit(): void {
+  async ngOnInit() {
     if (this.id) {
-      this.service.getById(this.id).subscribe(r => {
-        if (r) this.model = r;
-      });
+      try {
+        const data = await firstValueFrom<Challenge | undefined>(
+          this.service.getById(this.id)
+        );
+        if (data) {
+          this.model = { ...this.model, ...data };
+        }
+      } catch (e) {
+        console.error('Error getById() reto', e);
+      }
     }
   }
 
   async guardar(): Promise<void> {
-    if (this.id) {
-      await this.service.update(this.id, this.model);
-    } else {
-      await this.service.create(this.model);
+    try {
+      if (this.id) {
+        await this.service.update(this.id, this.model);
+      } else {
+        await this.service.create(this.model);
+      }
+
+      // Volver al listado de retos dentro de /app
+      this.router.navigateByUrl('/app/retos');
+    } catch (e) {
+      console.error('Error guardar() reto', e);
     }
-    this.router.navigateByUrl('/retos');
   }
 }
 
