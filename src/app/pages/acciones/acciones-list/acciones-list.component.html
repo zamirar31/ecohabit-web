@@ -1,20 +1,29 @@
-
-<div class="acciones-container">
-  
+<section class="acciones-container" aria-labelledby="acciones-title">
   <div class="acciones-header">
     <div class="header-content">
-      <h1>🌱 Mis Acciones Ecológicas</h1>
+      <h1 id="acciones-title">🌱 Mis Acciones Ecológicas</h1>
       <p>Registra y gestiona tus acciones sostenibles</p>
     </div>
-    <a routerLink="/acciones/nuevo" class="btn btn-primary btn-lg">
+    <a
+      routerLink="/app/acciones/nuevo"
+      class="btn btn-primary btn-lg"
+      aria-label="Crear una nueva acción ecológica"
+    >
       <span>➕ Nueva Acción</span>
     </a>
   </div>
 
-  <div class="acciones-filters">
+  <div
+    class="acciones-filters"
+    aria-label="Filtros de acciones ecológicas"
+    role="region"
+  >
     <div class="filter-group">
-      <label>Tipo:</label>
-      <select>
+      <label for="filter-tipo">Tipo:</label>
+      <select
+        id="filter-tipo"
+        aria-label="Filtrar acciones por tipo"
+      >
         <option>Todos</option>
         <option>Reciclaje</option>
         <option>Energía</option>
@@ -23,8 +32,11 @@
       </select>
     </div>
     <div class="filter-group">
-      <label>Período:</label>
-      <select>
+      <label for="filter-periodo">Período:</label>
+      <select
+        id="filter-periodo"
+        aria-label="Filtrar acciones por período de tiempo"
+      >
         <option>Este mes</option>
         <option>Últimos 30 días</option>
         <option>Este trimestre</option>
@@ -33,30 +45,54 @@
     </div>
   </div>
 
-  <div class="acciones-list" *ngIf="acciones.length > 0; else noAcciones">
-    <div class="list-header">
-      <div class="col-type">Tipo</div>
-      <div class="col-points">Puntos</div>
-      <div class="col-date">Fecha</div>
-      <div class="col-user">Usuario</div>
-      <div class="col-actions">Acciones</div>
+  <div
+    class="acciones-list"
+    *ngIf="acciones.length > 0; else noAcciones"
+    role="table"
+    aria-label="Listado de acciones ecológicas registradas"
+  >
+    <div class="list-header" role="rowgroup">
+      <div class="col-type" role="columnheader">Tipo</div>
+      <div class="col-points" role="columnheader">Puntos</div>
+      <div class="col-date" role="columnheader">Fecha</div>
+      <div class="col-user" role="columnheader">Usuario</div>
+      <div class="col-actions" role="columnheader">Acciones</div>
     </div>
 
-    <div class="list-items">
-      <div class="accion-item" *ngFor="let a of acciones" [class]="'type-' + a.type.toLowerCase()">
-        <div class="col-type">
+    <div class="list-items" role="rowgroup">
+      <div
+        class="accion-item"
+        *ngFor="let a of acciones"
+        [class]="'type-' + a.type.toLowerCase()"
+        role="row"
+        [attr.aria-label]="'Acción ecológica de tipo ' + a.type + ' con ' + a.points + ' puntos del usuario ' + a.userId"
+      >
+        <div class="col-type" role="cell">
           <div class="type-badge">{{ a.type }}</div>
         </div>
-        <div class="col-points">
+        <div class="col-points" role="cell">
           <span class="points-badge">+{{ a.points }} pts</span>
         </div>
-        <div class="col-date">{{ a.date | date: 'short' }}</div>
-        <div class="col-user">{{ a.userId }}</div>
-        <div class="col-actions">
-          <a [routerLink]="['/acciones/editar', a.id]" class="btn-action btn-edit">
-            ✏️ Editar
-          </a>
-          <button (click)="eliminar(a.id!)" class="btn-action btn-delete">
+        <div class="col-date" role="cell">
+          {{ a.date | date: 'short' }}
+        </div>
+        <div class="col-user" role="cell">
+          {{ a.userId }}
+        </div>
+        <div class="col-actions" role="cell">
+                      <a
+              [routerLink]="['/app/acciones/editar', a.id]"
+              class="btn-action btn-edit"
+              [attr.aria-label]="'Editar acción de tipo ' + a.type + ' con ' + a.points + ' puntos'"
+            >
+              ✏️ Editar
+            </a>
+
+          <button
+            (click)="eliminar(a.id!)"
+            class="btn-action btn-delete"
+            [attr.aria-label]="'Eliminar acción de tipo ' + a.type + ' con ' + a.points + ' puntos'"
+          >
             🗑️ Eliminar
           </button>
         </div>
@@ -65,14 +101,17 @@
   </div>
 
   <ng-template #noAcciones>
-    <div class="empty-state">
-      <div class="empty-icon">🌿</div>
+    <div class="empty-state" role="status" aria-live="polite">
+      <div class="empty-icon" aria-hidden="true">🌿</div>
       <h2>No hay acciones registradas</h2>
       <p>Comienza a registrar tus acciones ecológicas para ver el impacto</p>
-      <a routerLink="/acciones/nuevo" class="btn btn-primary">
+      <a
+        routerLink="/app/acciones/nuevo"
+        class="btn btn-primary"
+        aria-label="Crear la primera acción ecológica"
+      >
         Crear primera acción
       </a>
     </div>
   </ng-template>
-</div>
-
+</section>

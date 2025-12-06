@@ -40,7 +40,7 @@ import { Challenge } from '../../../models/challenge.model';
         </label>
 
         <button type="submit">Guardar</button>
-        <a routerLink="/retos">Cancelar</a>
+        <a routerLink="/app/retos">Cancelar</a>
       </form>
     </div>
   `
@@ -75,7 +75,7 @@ export class RetosFormComponent {
     } else {
       await this.service.create(this.model);
     }
-    this.router.navigateByUrl('/retos');
+    this.router.navigateByUrl('/app/retos');
   }
 }
 
