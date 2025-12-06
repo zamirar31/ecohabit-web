@@ -1,4 +1,3 @@
-
 <div class="retos-container">
   
   <div class="retos-header">
@@ -6,21 +5,55 @@
       <h1>🏆 Retos Ecológicos</h1>
       <p>Participa en desafíos para transformar el mundo</p>
     </div>
-    <a routerLink="/retos/nuevo" class="btn btn-primary btn-lg">
+    
+    <!-- IMPORTANTE: usar /app/retos/nuevo -->
+    <a routerLink="/app/retos/nuevo" class="btn btn-primary btn-lg">
       <span>➕ Nuevo Reto</span>
     </a>
   </div>
 
+  <!-- TABS -->
   <div class="retos-tabs">
-    <button class="tab-btn active">Todos</button>
-    <button class="tab-btn">Activos</button>
-    <button class="tab-btn">Completados</button>
-    <button class="tab-btn">Próximos</button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'todos'"
+      (click)="setTab('todos')"
+    >
+      Todos
+    </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'activos'"
+      (click)="setTab('activos')"
+    >
+      Activos
+    </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'completados'"
+      (click)="setTab('completados')"
+    >
+      Completados
+    </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'proximos'"
+      (click)="setTab('proximos')"
+    >
+      Próximos
+    </button>
   </div>
 
-  <div class="retos-grid" *ngIf="retos.length > 0; else noRetos">
-    <div class="reto-card" *ngFor="let r of retos" [class.completed]="!r.active">
-      
+  <!-- LISTA DE RETOS (ya filtrada) -->
+  <div class="retos-grid" *ngIf="filteredRetos.length > 0; else noRetos">
+    <div
+      class="reto-card"
+      *ngFor="let r of filteredRetos"
+      [class.completed]="!r.active"
+    >
       <div class="reto-status">
         <span class="status-badge" [class.active]="r.active" [class.inactive]="!r.active">
           {{ r.active ? '🟢 Activo' : '⚪ Inactivo' }}
@@ -57,25 +90,32 @@
       </div>
 
       <div class="reto-actions">
-        <a [routerLink]="['/retos/editar', r.id]" class="btn-action btn-edit">
+        <!-- IMPORTANTE: usar /app/retos/editar -->
+        <a
+          [routerLink]="['/app/retos/editar', r.id]"
+          class="btn-action btn-edit"
+        >
           ✏️ Editar
         </a>
-        <button (click)="eliminar(r.id!)" class="btn-action btn-delete">
+        <button
+          (click)="eliminar(r.id!)"
+          class="btn-action btn-delete"
+        >
           🗑️ Eliminar
         </button>
       </div>
     </div>
   </div>
 
+  <!-- ESTADO VACÍO -->
   <ng-template #noRetos>
     <div class="empty-state">
       <div class="empty-icon">🎯</div>
       <h2>No hay retos disponibles</h2>
       <p>Crea tu primer reto y comienza a inspirar a la comunidad</p>
-      <a routerLink="/retos/nuevo" class="btn btn-primary">
+      <a routerLink="/app/retos/nuevo" class="btn btn-primary">
         Crear primer reto
       </a>
     </div>
   </ng-template>
 </div>
-

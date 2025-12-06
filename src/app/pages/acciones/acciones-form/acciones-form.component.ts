@@ -42,7 +42,7 @@ import { firstValueFrom } from 'rxjs';
         </label>
 
         <button type="submit">Guardar</button>
-        <a routerLink="/acciones">Cancelar</a>
+        <a routerLink="/app/acciones">Cancelar</a>
       </form>
     </div>
   `
@@ -80,7 +80,7 @@ export class AccionesFormComponent {
       } else {
         await this.service.create(this.model);
       }
-      this.router.navigateByUrl('/acciones');
+      this.router.navigateByUrl('/app/acciones');
     } catch (e) {
       console.error('Error guardar()', e);
     }

@@ -12,14 +12,56 @@ import { Challenge } from '../../../models/challenge.model';
   styleUrls: ['./retos-list.component.scss']
 })
 export class RetosListComponent implements OnInit {
+
   private service = inject(ChallengesService);
+
   retos: Challenge[] = [];
+  filteredRetos: Challenge[] = [];
+
+  // pestaña activa
+  activeTab: 'todos' | 'activos' | 'completados' | 'proximos' = 'todos';
 
   ngOnInit(): void {
-    this.service.list().subscribe(rows => this.retos = rows);
+    this.service.list().subscribe(rows => {
+      this.retos = rows;
+      this.applyFilter();  // aplicar filtro al cargar
+    });
   }
 
   async eliminar(id: string): Promise<void> {
     await this.service.remove(id);
+    // quitar el reto de la lista local y volver a filtrar
+    this.retos = this.retos.filter(r => r.id !== id);
+    this.applyFilter();
+  }
+
+  // cuando el usuario cambia de tab
+  setTab(tab: 'todos' | 'activos' | 'completados' | 'proximos'): void {
+    this.activeTab = tab;
+    this.applyFilter();
+  }
+
+  // aplica el filtro según la pestaña
+  private applyFilter(): void {
+    const now = new Date();
+
+    switch (this.activeTab) {
+      case 'activos':
+        this.filteredRetos = this.retos.filter(r => r.active === true);
+        break;
+
+      case 'completados':
+        this.filteredRetos = this.retos.filter(r => r.active === false);
+        break;
+
+      case 'proximos':
+        // aquí asumo que startDate es un string de fecha; si es Timestamp habría que convertir
+        this.filteredRetos = this.retos.filter(r => new Date(r.startDate) > now);
+        break;
+
+      default: // 'todos'
+        this.filteredRetos = [...this.retos];
+        break;
+    }
   }
 }

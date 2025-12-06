@@ -1,56 +1,180 @@
-<nav class="eco-navbar">
+<nav
+  class="eco-navbar"
+  aria-label="Navegación principal"
+  role="navigation"
+>
   <div class="navbar-container">
     
+    <!-- Marca -->
     <div class="navbar-brand">
-      <span class="brand-icon">🌿</span>
-      <a routerLink="/" class="brand-text">EcoHabit</a>
+      <span class="brand-icon" aria-hidden="true">🌿</span>
+      <a routerLink="/" class="brand-text" aria-label="Ir a la página de inicio de EcoHabit">
+        EcoHabit
+      </a>
     </div>
 
-    <ul class="navbar-menu" *ngIf="isAuthenticated$ | async">
-      <li><a routerLink="/app/panel" routerLinkActive="active">Panel</a></li>
-      <li><a routerLink="/app/acciones" routerLinkActive="active">Acciones</a></li>
-      <li><a routerLink="/app/retos" routerLinkActive="active">Retos</a></li>
+    <!-- Menú principal escritorio -->
+    <ul
+      class="navbar-menu"
+      *ngIf="isAuthenticated$ | async"
+      aria-label="Secciones principales de la aplicación"
+    >
+      <li>
+        <a
+          routerLink="/app/panel"
+          routerLinkActive="active"
+          aria-label="Ir a mi panel eco"
+        >
+          Panel
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/app/acciones"
+          routerLinkActive="active"
+          aria-label="Ir a la sección de acciones ecológicas"
+        >
+          Acciones
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/app/retos"
+          routerLinkActive="active"
+          aria-label="Ir a la sección de retos ecológicos"
+        >
+          Retos
+        </a>
+      </li>
     </ul>
 
+    <!-- Área de autenticación -->
     <div class="navbar-auth">
-      
-      <button *ngIf="isAuthenticated$ | async" 
-              (click)="logout()" 
-              class="btn btn-outline btn-sm">
+      <!-- Logout cuando está autenticado -->
+      <button
+        *ngIf="isAuthenticated$ | async" 
+        (click)="logout()" 
+        class="btn btn-outline btn-sm"
+        aria-label="Cerrar sesión en EcoHabit"
+      >
         🚪 Logout
       </button>
 
+      <!-- Login / Registro cuando NO está autenticado -->
       <ng-container *ngIf="!(isAuthenticated$ | async)">
-        <a routerLink="/login" class="btn btn-outline btn-sm">🔑 Login</a>
-        <a routerLink="/registro" class="btn btn-primary btn-sm">✨ Registrarse</a>
+        <a
+          routerLink="/login"
+          class="btn btn-outline btn-sm"
+          aria-label="Ir a la página de inicio de sesión"
+        >
+          🔑 Login
+        </a>
+        <a
+          routerLink="/registro"
+          class="btn btn-primary btn-sm"
+          aria-label="Ir a la página de registro"
+        >
+          ✨ Registrarse
+        </a>
       </ng-container>
     </div>
 
-    <button class="navbar-mobile-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+    <!-- Botón menú móvil (hamburguesa) -->
+    <button
+      class="navbar-mobile-toggle"
+      (click)="toggleMenu()"
+      [class.active]="isMenuOpen"
+      [attr.aria-expanded]="isMenuOpen"
+      aria-controls="mobile-menu"
+      aria-label="Abrir o cerrar el menú de navegación"
+      type="button"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
   </div>
 
-  <div class="navbar-mobile-menu" *ngIf="isMenuOpen">
-    
-    <ul *ngIf="isAuthenticated$ | async" class="mobile-menu-list">
-      <li><a routerLink="/app/panel" routerLinkActive="active" (click)="closeMenu()">📊 Panel</a></li>
-      <li><a routerLink="/app/acciones" routerLinkActive="active" (click)="closeMenu()">✨ Acciones</a></li>
-      <li><a routerLink="/app/retos" routerLinkActive="active" (click)="closeMenu()">🏆 Retos</a></li>
+  <!-- Menú móvil -->
+  <div
+    class="navbar-mobile-menu"
+    *ngIf="isMenuOpen"
+    id="mobile-menu"
+    aria-label="Menú de navegación móvil"
+  >
+    <!-- Menú móvil autenticado -->
+    <ul
+      *ngIf="isAuthenticated$ | async"
+      class="mobile-menu-list"
+      aria-label="Opciones de navegación para usuarios autenticados"
+    >
+      <li>
+        <a
+          routerLink="/app/panel"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          aria-label="Ir a mi panel eco"
+        >
+          📊 Panel
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/app/acciones"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          aria-label="Ir a mis acciones ecológicas"
+        >
+          ✨ Acciones
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/app/retos"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          aria-label="Ir a mis retos ecológicos"
+        >
+          🏆 Retos
+        </a>
+      </li>
       <li class="divider"></li>
       <li>
-        <button (click)="logout()" class="mobile-logout">
+        <button
+          (click)="logout()"
+          class="mobile-logout"
+          aria-label="Cerrar sesión"
+          type="button"
+        >
           🚪 Logout
         </button>
       </li>
     </ul>
 
-    <ul *ngIf="!(isAuthenticated$ | async)" class="mobile-menu-list">
-      <li><a routerLink="/login" (click)="closeMenu()">🔑 Login</a></li>
-      <li><a routerLink="/registro" (click)="closeMenu()">✨ Registrarse</a></li>
+    <!-- Menú móvil no autenticado -->
+    <ul
+      *ngIf="!(isAuthenticated$ | async)"
+      class="mobile-menu-list"
+      aria-label="Opciones de autenticación"
+    >
+      <li>
+        <a
+          routerLink="/login"
+          (click)="closeMenu()"
+          aria-label="Ir a la página de inicio de sesión"
+        >
+          🔑 Login
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/registro"
+          (click)="closeMenu()"
+          aria-label="Ir a la página de registro"
+        >
+          ✨ Registrarse
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
-
