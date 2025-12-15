@@ -66,4 +66,16 @@ export class RetosListComponent implements OnInit {
         break;
     }
   }
+
+  getProgress(reto: Challenge): number {
+    const start = new Date(reto.startDate).getTime();
+    const end = new Date(reto.endDate).getTime();
+    const now = new Date().getTime();
+
+    const total = end - start;
+    const elapsed = now - start;
+    const progress = (elapsed / total) * 100;
+
+    return Math.max(0, Math.min(100, Math.round(progress)));
+  }
 }
