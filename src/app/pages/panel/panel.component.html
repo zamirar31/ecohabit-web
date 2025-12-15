@@ -1,27 +1,46 @@
-<div class="panel-container">
-
+<div class="panel-container" role="region" aria-labelledby="panel-title">
+  
   <div class="panel-header">
     <div class="header-content">
-      <h1>Mi Panel Eco</h1>
+      <h1 id="panel-title">Mi Panel Eco</h1>
       <p>Bienvenido a tu espacio de seguimiento ambiental</p>
     </div>
-    <div class="header-stats">
-      <div class="stat-card">
-        <div class="stat-icon">🌿</div>
+
+    <div
+      class="header-stats"
+      role="list"
+      aria-label="Resumen de tus estadísticas ecológicas"
+    >
+      <div
+        class="stat-card"
+        role="listitem"
+        [attr.aria-label]="'Tienes ' + (userStats.points | number) + ' puntos eco acumulados'"
+      >
+        <div class="stat-icon" aria-hidden="true">🌿</div>
         <div class="stat-info">
           <div class="stat-value">{{ userStats.points | number }}</div>
           <div class="stat-label">Puntos Eco</div>
         </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">🏆</div>
+
+      <div
+        class="stat-card"
+        role="listitem"
+        [attr.aria-label]="'Has completado ' + userStats.challengesCompleted + ' retos ecológicos'"
+      >
+        <div class="stat-icon" aria-hidden="true">🏆</div>
         <div class="stat-info">
           <div class="stat-value">{{ userStats.challengesCompleted }}</div>
           <div class="stat-label">Retos Completados</div>
         </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">📊</div>
+
+      <div
+        class="stat-card"
+        role="listitem"
+        [attr.aria-label]="'Tu nivel actual es ' + userStats.level"
+      >
+        <div class="stat-icon" aria-hidden="true">📊</div>
         <div class="stat-info">
           <div class="stat-value">{{ userStats.level }}</div>
           <div class="stat-label">Nivel Actual</div>
@@ -31,83 +50,155 @@
   </div>
 
   <div class="panel-content">
-
+    
     <!-- PROGRESO -->
-    <section class="panel-section">
+    <section
+      class="panel-section"
+      aria-labelledby="progreso-title"
+    >
       <div class="section-header">
-        <h2>📈 Tu Progreso</h2>
+        <h2 id="progreso-title">📈 Tu Progreso</h2>
       </div>
       <div class="progress-grid">
-        <div class="progress-item">
-          <div class="progress-title">Nivel Actual: {{ userStats.level }}</div>
-          <div class="progress-bar">
+        <div
+          class="progress-item"
+          role="group"
+          aria-label="Nivel actual y progreso hacia el siguiente nivel"
+        >
+          <div class="progress-title">
+            Nivel Actual: {{ userStats.level }}
+          </div>
+          <div
+            class="progress-bar"
+            role="img"
+            aria-label="Progreso hacia el próximo nivel: 75 por ciento"
+          >
             <div class="progress-fill" style="width: 75%"></div>
           </div>
-          <div class="progress-text">1,875 / 2,500 pts para próximo nivel</div>
-        </div>
-        <div class="progress-item">
-          <div class="progress-title">Racha Semanal</div>
-          <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="(userStats.streak / 7) * 100"></div>
+          <div class="progress-text">
+            1,875 / 2,500 pts para próximo nivel
           </div>
-          <div class="progress-text">{{ userStats.streak }} días seguidos - ¡Excelente!</div>
+        </div>
+
+        <div
+          class="progress-item"
+          role="group"
+          aria-label="Racha semanal de acciones ecológicas"
+        >
+          <div class="progress-title">Racha Semanal</div>
+          <div
+            class="progress-bar"
+            role="img"
+            [attr.aria-label]="'Racha actual de ' + userStats.streak + ' días seguidos de acciones ecológicas'"
+          >
+            <div
+              class="progress-fill"
+              [style.width.%]="(userStats.streak / 7) * 100"
+            ></div>
+          </div>
+          <div class="progress-text">
+            {{ userStats.streak }} días seguidos - ¡Excelente!
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ACTIVIDAD RECIENTE -->
-    <section class="panel-section">
+    <section
+      class="panel-section"
+      aria-labelledby="actividad-title"
+    >
       <div class="section-header">
-        <h2>✨ Actividad Reciente</h2>
-        <a href="#" class="link-see-more">Ver todo →</a>
+        <h2 id="actividad-title">✨ Actividad Reciente</h2>
+        <a href="#" class="link-see-more">
+          Ver todo →
+        </a>
       </div>
-      <div class="activity-list">
-        <div *ngFor="let activity of recentActivity; let i = index"
-             class="activity-item"
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="activity-icon">{{ activity.icon }}</div>
+      <div
+        class="activity-list"
+        role="list"
+        aria-label="Lista de actividades recientes"
+      >
+        <div
+          *ngFor="let activity of recentActivity; let i = index"
+          class="activity-item"
+          [style.animation-delay]="(i * 0.1) + 's'"
+          role="listitem"
+          [attr.aria-label]="activity.title + ', ' + activity.time + ', ' + activity.points + ' puntos'"
+        >
+          <div class="activity-icon" aria-hidden="true">
+            {{ activity.icon }}
+          </div>
           <div class="activity-info">
             <div class="activity-title">{{ activity.title }}</div>
             <div class="activity-time">{{ activity.time }}</div>
           </div>
-          <div class="activity-points">+{{ activity.points }} pts</div>
+          <div class="activity-points">
+            +{{ activity.points }} pts
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ACCIONES RÁPIDAS -->
-    <section class="panel-section">
+    <section
+      class="panel-section"
+      aria-labelledby="acciones-rapidas-title"
+    >
       <div class="section-header">
-        <h2>🎯 Acciones Rápidas</h2>
+        <h2 id="acciones-rapidas-title">🎯 Acciones Rápidas</h2>
       </div>
-
-      <div class="quick-actions">
-        <a routerLink="/app/acciones" class="quick-action-card">
-          <div class="action-icon">📝</div>
+      <div
+        class="quick-actions"
+        role="list"
+        aria-label="Accesos rápidos a secciones principales"
+      >
+        <a
+          href="/acciones"
+          class="quick-action-card"
+          role="listitem"
+          aria-label="Ver y gestionar mis acciones ecológicas"
+        >
+          <div class="action-icon" aria-hidden="true">📝</div>
           <div class="action-text">
             <div class="action-title">Mis Acciones</div>
             <div class="action-desc">Ver y gestionar mis acciones</div>
           </div>
         </a>
 
-        <a routerLink="/app/retos" class="quick-action-card">
-          <div class="action-icon">🏆</div>
+        <a
+          href="/retos"
+          class="quick-action-card"
+          role="listitem"
+          aria-label="Ver y participar en retos ecológicos activos"
+        >
+          <div class="action-icon" aria-hidden="true">🏆</div>
           <div class="action-text">
             <div class="action-title">Retos Activos</div>
             <div class="action-desc">Participa en nuevos desafíos</div>
           </div>
         </a>
 
-        <a routerLink="/app/aprende" class="quick-action-card">
-          <div class="action-icon">🎓</div>
+        <a
+          href="#"
+          class="quick-action-card"
+          role="listitem"
+          aria-label="Acceder a contenido educativo sobre ecología"
+        >
+          <div class="action-icon" aria-hidden="true">🎓</div>
           <div class="action-text">
             <div class="action-title">Aprende Más</div>
             <div class="action-desc">Contenido educativo eco</div>
           </div>
         </a>
 
-        <a routerLink="/app/comunidad" class="quick-action-card">
-          <div class="action-icon">👥</div>
+        <a
+          href="#"
+          class="quick-action-card"
+          role="listitem"
+          aria-label="Ir a la sección de comunidad para conectar con otros usuarios"
+        >
+          <div class="action-icon" aria-hidden="true">👥</div>
           <div class="action-text">
             <div class="action-title">Comunidad</div>
             <div class="action-desc">Conecta con otros usuarios</div>
@@ -116,29 +207,55 @@
       </div>
     </section>
 
-    <!-- IMPACTO -->
-    <section class="panel-section">
+    <!-- TU IMPACTO -->
+    <section
+      class="panel-section"
+      aria-labelledby="impacto-title"
+    >
       <div class="section-header">
-        <h2>🌍 Tu Impacto</h2>
+        <h2 id="impacto-title">🌍 Tu Impacto</h2>
       </div>
-      <div class="impact-grid">
-        <div class="impact-card">
-          <div class="impact-number">🌳</div>
+      <div
+        class="impact-grid"
+        role="list"
+        aria-label="Indicadores de tu impacto ambiental"
+      >
+        <div
+          class="impact-card"
+          role="listitem"
+          [attr.aria-label]="'Has contribuido a plantar aproximadamente ' + impact.trees + ' árboles'"
+        >
+          <div class="impact-number" aria-hidden="true">🌳</div>
           <div class="impact-value">{{ impact.trees }}</div>
           <div class="impact-label">Árboles Plantados</div>
         </div>
-        <div class="impact-card">
-          <div class="impact-number">💧</div>
+
+        <div
+          class="impact-card"
+          role="listitem"
+          [attr.aria-label]="'Has ayudado a ahorrar aproximadamente ' + impact.water + ' litros de agua'"
+        >
+          <div class="impact-number" aria-hidden="true">💧</div>
           <div class="impact-value">{{ impact.water }}</div>
           <div class="impact-label">Agua Ahorrada</div>
         </div>
-        <div class="impact-card">
-          <div class="impact-number">♻️</div>
+
+        <div
+          class="impact-card"
+          role="listitem"
+          [attr.aria-label]="'Has apoyado el reciclaje de aproximadamente ' + impact.waste + ' de residuos'"
+        >
+          <div class="impact-number" aria-hidden="true">♻️</div>
           <div class="impact-value">{{ impact.waste }}</div>
           <div class="impact-label">Residuos Reciclados</div>
         </div>
-        <div class="impact-card">
-          <div class="impact-number">⚡</div>
+
+        <div
+          class="impact-card"
+          role="listitem"
+          [attr.aria-label]="'Has contribuido al ahorro aproximado de ' + impact.energy + ' de energía'"
+        >
+          <div class="impact-number" aria-hidden="true">⚡</div>
           <div class="impact-value">{{ impact.energy }}</div>
           <div class="impact-label">Energía Ahorrada</div>
         </div>
@@ -147,4 +264,3 @@
 
   </div>
 </div>
-

@@ -1,2 +1,20 @@
 // Estilos movidos a shared/layout/layout.component.scss
 // Este archivo se mantiene vacío para compatibilidad
+
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: -999px;
+  }
+  
+  .skip-link:focus {
+    left: 10px;
+    top: 10px;
+    z-index: 1000;
+    background: #ffffff;
+    color: #000000;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid #000;
+  }
+  

@@ -14,103 +14,56 @@ type TabKey = 'todos' | 'activos' | 'completados' | 'proximos';
   styleUrls: ['./retos-list.component.scss']
 })
 export class RetosListComponent implements OnInit {
+
   private service = inject(ChallengesService);
 
   retos: Challenge[] = [];
-  selectedTab: TabKey = 'todos';
+  filteredRetos: Challenge[] = [];
+
+  // pestaña activa
+  activeTab: 'todos' | 'activos' | 'completados' | 'proximos' = 'todos';
 
   ngOnInit(): void {
-    this.service.list().subscribe({
-      next: (rows: Challenge[]) => {
-        console.log('Retos desde Firestore:', rows);
-        this.retos = rows;
-      },
-      error: (err: any) => console.error('Error list() retos', err)
-    });
-  }
-
-  setTab(tab: TabKey): void {
-    this.selectedTab = tab;
-  }
-
-  /** Lista filtrada según la pestaña seleccionada */
-  get retosFiltrados(): Challenge[] {
-    const hoy = new Date();
-
-    return this.retos.filter((r) => {
-      const start = this.parseDate(r.startDate);
-
-      switch (this.selectedTab) {
-        case 'activos':
-          return !!r.active;
-
-        case 'completados':
-          return !r.active;
-
-        case 'proximos':
-          return !!r.active && start > hoy;
-
-        case 'todos':
-        default:
-          return true;
-      }
+    this.service.list().subscribe(rows => {
+      this.retos = rows;
+      this.applyFilter();  // aplicar filtro al cargar
     });
   }
 
   async eliminar(id: string): Promise<void> {
-    try {
-      await this.service.remove(id);
-    } catch (e) {
-      console.error('Error remove() reto', e);
-    }
+    await this.service.remove(id);
+    // quitar el reto de la lista local y volver a filtrar
+    this.retos = this.retos.filter(r => r.id !== id);
+    this.applyFilter();
   }
 
-  /** Normaliza la fecha (string, Date o Timestamp de Firestore) */
-  private parseDate(value: any): Date {
-    if (!value) return new Date(0);
-
-    // Si viene como Timestamp de Firestore (tiene método toDate)
-    if (value?.toDate && typeof value.toDate === 'function') {
-      return value.toDate();
-    }
-
-    // Si ya es Date
-    if (value instanceof Date) return value;
-
-    // Si es string "YYYY-MM-DD"
-    return new Date(value);
+  // cuando el usuario cambia de tab
+  setTab(tab: 'todos' | 'activos' | 'completados' | 'proximos'): void {
+    this.activeTab = tab;
+    this.applyFilter();
   }
 
-  /** Calcula el % de progreso de un reto */
-  getProgress(r: Challenge): number {
-    // Si está inactivo lo consideramos 100% completado
-    if (!r.active) {
-      return 100;
+  // aplica el filtro según la pestaña
+  private applyFilter(): void {
+    const now = new Date();
+
+    switch (this.activeTab) {
+      case 'activos':
+        this.filteredRetos = this.retos.filter(r => r.active === true);
+        break;
+
+      case 'completados':
+        this.filteredRetos = this.retos.filter(r => r.active === false);
+        break;
+
+      case 'proximos':
+        // aquí asumo que startDate es un string de fecha; si es Timestamp habría que convertir
+        this.filteredRetos = this.retos.filter(r => new Date(r.startDate) > now);
+        break;
+
+      default: // 'todos'
+        this.filteredRetos = [...this.retos];
+        break;
     }
-
-    const hoy = new Date();
-    const start = this.parseDate(r.startDate);
-    const end = this.parseDate(r.endDate);
-
-    // Si todavía no inicia
-    if (hoy <= start) {
-      return 0;
-    }
-
-    // Si ya terminó
-    if (hoy >= end) {
-      return 100;
-    }
-
-    const totalMs = end.getTime() - start.getTime();
-    const elapsedMs = hoy.getTime() - start.getTime();
-
-    if (totalMs <= 0) {
-      return 0;
-    }
-
-    const pct = Math.round((elapsedMs / totalMs) * 100);
-    // Aseguramos rango 0–100
-    return Math.min(100, Math.max(0, pct));
   }
 }

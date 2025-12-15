@@ -1,40 +1,89 @@
 <div class="registro-container">
-  <div class="registro-card">
+  <div
+    class="registro-card"
+    role="form"
+    aria-labelledby="registro-title"
+  >
     <div class="registro-header">
-      <div class="logo">🌱</div>
-      <h1>Únete a EcoHabit</h1>
+      <div class="logo" aria-hidden="true">🌱</div>
+      <h1 id="registro-title">Únete a EcoHabit</h1>
       <p>Comienza tu viaje sostenible hoy</p>
     </div>
 
-    <div class="progress-steps">
-      <div [class.step]="true" [class.active]="step >= 1" [class.completed]="step > 1">
+    <!-- Pasos del registro como lista accesible -->
+    <div
+      class="progress-steps"
+      role="list"
+      aria-label="Progreso del registro en dos pasos"
+    >
+      <div
+        [class.step]="true"
+        [class.active]="step >= 1"
+        [class.completed]="step > 1"
+        role="listitem"
+        [attr.aria-current]="step === 1 ? 'step' : null"
+        aria-label="Paso 1: Datos personales"
+      >
         <span class="step-number">1</span>
         <span class="step-label">Datos</span>
       </div>
-      <div class="progress-line" [class.completed]="step > 1"></div>
-      <div [class.step]="true" [class.active]="step >= 2" [class.completed]="step > 2">
+
+      <div
+        class="progress-line"
+        [class.completed]="step > 1"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        [class.step]="true"
+        [class.active]="step >= 2"
+        [class.completed]="step > 2"
+        role="listitem"
+        [attr.aria-current]="step === 2 ? 'step' : null"
+        aria-label="Paso 2: Seguridad de la cuenta"
+      >
         <span class="step-number">2</span>
         <span class="step-label">Seguridad</span>
       </div>
     </div>
 
-    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="registro-form">
-      
-      <div *ngIf="successMessage" class="success-message">
-        <span class="success-icon">✅</span>
+    <form
+      [formGroup]="registroForm"
+      (ngSubmit)="onSubmit()"
+      class="registro-form"
+      aria-describedby="registro-description"
+    >
+      <p id="registro-description" class="sr-only">
+        Formulario de registro en dos pasos. Primero datos personales y luego seguridad de la cuenta.
+      </p>
+
+      <!-- MENSAJES ACCESIBLES -->
+      <div
+        *ngIf="successMessage"
+        class="success-message"
+        role="status"
+        aria-live="polite"
+      >
+        <span class="success-icon" aria-hidden="true">✅</span>
         {{ successMessage }}
       </div>
 
-      <div *ngIf="error" class="error-message">
-        <span class="error-icon">⚠️</span>
+      <div
+        *ngIf="error"
+        class="error-message"
+        role="alert"
+        aria-live="assertive"
+      >
+        <span class="error-icon" aria-hidden="true">⚠️</span>
         {{ error }}
       </div>
 
-      <div *ngIf="step === 1" class="form-step">
+      <!-- PASO 1: DATOS -->
+      <div *ngIf="step === 1" class="form-step" aria-label="Paso 1: Datos personales">
         <div class="form-group">
           <label for="nombre">Nombre Completo</label>
           <div class="input-wrapper">
-            <span class="input-icon">👤</span>
+            <span class="input-icon" aria-hidden="true">👤</span>
             <input
               type="text"
               id="nombre"
@@ -42,9 +91,15 @@
               placeholder="Juan Pérez"
               class="form-input"
               [class.error]="registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid"
+              autocomplete="name"
+              aria-required="true"
             />
           </div>
-          <small *ngIf="registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid" class="error-text">
+          <small
+            *ngIf="registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid"
+            class="error-text"
+            role="alert"
+          >
             El nombre debe tener al menos 2 caracteres
           </small>
         </div>
@@ -52,7 +107,7 @@
         <div class="form-group">
           <label for="email">Correo Electrónico</label>
           <div class="input-wrapper">
-            <span class="input-icon">📧</span>
+            <span class="input-icon" aria-hidden="true">📧</span>
             <input
               type="email"
               id="email"
@@ -60,9 +115,15 @@
               placeholder="tu@correo.com"
               class="form-input"
               [class.error]="registroForm.get('email')?.touched && registroForm.get('email')?.invalid"
+              autocomplete="email"
+              aria-required="true"
             />
           </div>
-          <small *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.invalid" class="error-text">
+          <small
+            *ngIf="registroForm.get('email')?.touched && registroForm.get('email')?.invalid"
+            class="error-text"
+            role="alert"
+          >
             Por favor ingresa un email válido
           </small>
         </div>
@@ -78,11 +139,12 @@
         </div>
       </div>
 
-      <div *ngIf="step === 2" class="form-step">
+      <!-- PASO 2: SEGURIDAD -->
+      <div *ngIf="step === 2" class="form-step" aria-label="Paso 2: Seguridad de la cuenta">
         <div class="form-group">
           <label for="password">Contraseña</label>
           <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
+            <span class="input-icon" aria-hidden="true">🔒</span>
             <input
               [type]="showPassword ? 'text' : 'password'"
               id="password"
@@ -91,15 +153,32 @@
               class="form-input"
               [class.error]="registroForm.get('password')?.touched && registroForm.get('password')?.invalid"
               (input)="onPasswordChange()"
+              autocomplete="new-password"
+              aria-required="true"
             />
-            <button type="button" class="toggle-password" (click)="togglePassword()">
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePassword()"
+              [attr.aria-pressed]="showPassword"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
               {{ showPassword ? '👁️‍🗨️' : '👁️' }}
             </button>
           </div>
-          <small *ngIf="registroForm.get('password')?.touched && registroForm.get('password')?.invalid" class="error-text">
+          <small
+            *ngIf="registroForm.get('password')?.touched && registroForm.get('password')?.invalid"
+            class="error-text"
+            role="alert"
+          >
             La contraseña debe tener al menos 8 caracteres
           </small>
-          <div *ngIf="passwordStrength" [class]="'password-strength ' + passwordStrength">
+          <div
+            *ngIf="passwordStrength"
+            [class]="'password-strength ' + passwordStrength"
+            role="status"
+            aria-live="polite"
+          >
             Fortaleza: {{ passwordStrength }}
           </div>
         </div>
@@ -107,7 +186,7 @@
         <div class="form-group">
           <label for="confirmPassword">Confirmar Contraseña</label>
           <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
+            <span class="input-icon" aria-hidden="true">🔒</span>
             <input
               [type]="showPassword ? 'text' : 'password'"
               id="confirmPassword"
@@ -115,31 +194,62 @@
               placeholder="••••••••"
               class="form-input"
               [class.error]="registroForm.get('confirmPassword')?.touched && (registroForm.get('confirmPassword')?.invalid || registroForm.hasError('passwordMismatch'))"
+              autocomplete="new-password"
+              aria-required="true"
             />
           </div>
-          <small *ngIf="registroForm.hasError('passwordMismatch') && registroForm.get('confirmPassword')?.touched" class="error-text">
+          <small
+            *ngIf="registroForm.hasError('passwordMismatch') && registroForm.get('confirmPassword')?.touched"
+            class="error-text"
+            role="alert"
+          >
             Las contraseñas no coinciden
           </small>
         </div>
 
         <div class="form-group checkboxes">
           <label class="checkbox">
-            <input type="checkbox" formControlName="terms" />
-            <span>Acepto los <a href="#">términos y condiciones</a></span>
+            <input
+              type="checkbox"
+              formControlName="terms"
+              aria-required="true"
+              aria-label="Aceptar términos y condiciones"
+            />
+            <span>
+              Acepto los
+              <a href="#">
+                términos y condiciones
+              </a>
+            </span>
           </label>
-          <small *ngIf="registroForm.get('terms')?.touched && registroForm.get('terms')?.invalid" class="error-text">
+          <small
+            *ngIf="registroForm.get('terms')?.touched && registroForm.get('terms')?.invalid"
+            class="error-text"
+            role="alert"
+          >
             Debes aceptar los términos para continuar
           </small>
 
           <label class="checkbox">
-            <input type="checkbox" formControlName="newsletter" />
+            <input
+              type="checkbox"
+              formControlName="newsletter"
+              aria-label="Quiero recibir consejos y actualizaciones por correo"
+            />
             <span>Quiero recibir consejos y actualizaciones por correo</span>
           </label>
         </div>
       </div>
 
+      <!-- ACCIONES (BOTONES) -->
       <div class="form-actions">
-        <button type="button" class="btn-secondary" *ngIf="step > 1" (click)="prevStep()">
+        <button
+          type="button"
+          class="btn-secondary"
+          *ngIf="step > 1"
+          (click)="prevStep()"
+          aria-label="Volver al paso anterior"
+        >
           ← Anterior
         </button>
 
@@ -149,6 +259,8 @@
           *ngIf="step < 2"
           (click)="nextStep()"
           [disabled]="step === 1 && (registroForm.get('nombre')?.invalid || registroForm.get('email')?.invalid)"
+          [attr.aria-disabled]="step === 1 && (registroForm.get('nombre')?.invalid || registroForm.get('email')?.invalid)"
+          aria-label="Ir al siguiente paso del registro"
         >
           Siguiente →
         </button>
@@ -158,19 +270,28 @@
           class="btn-submit"
           *ngIf="step === 2"
           [disabled]="registroForm.invalid || loading"
+          [attr.aria-disabled]="registroForm.invalid || loading"
+          aria-label="Crear cuenta en EcoHabit"
         >
           <span *ngIf="!loading">Crear Cuenta</span>
-          <span *ngIf="loading" class="loading-spinner">Creando...</span>
+          <span *ngIf="loading" class="loading-spinner">
+            Creando...
+          </span>
         </button>
       </div>
     </form>
 
     <div class="login-link">
-      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+      ¿Ya tienes cuenta?
+      <a
+        routerLink="/login"
+        aria-label="Ir a la página de inicio de sesión"
+      >
+        Inicia sesión
+      </a>
     </div>
   </div>
 
-  <div class="decoration flower-1">🌻</div>
-  <div class="decoration flower-2">🌻</div>
+  <div class="decoration flower-1" aria-hidden="true">🌻</div>
+  <div class="decoration flower-2" aria-hidden="true">🌻</div>
 </div>
-

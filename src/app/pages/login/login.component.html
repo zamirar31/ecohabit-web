@@ -1,27 +1,48 @@
 <div class="login-container">
-  <div class="login-card">
+
+  <div class="login-card" role="form" aria-labelledby="login-title">
     <div class="login-header">
-      <div class="logo">🌱</div>
-      <h1>EcoHabit</h1>
-      <p>Bienvenido de vuelta</p>
+      <div class="logo" aria-hidden="true">🌱</div>
+      <h1 id="login-title">EcoHabit</h1>
+      <p>Bienvenido de vuelta. Inicia sesión para continuar.</p>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      
-      <div *ngIf="successMessage" class="success-message">
-        <span class="success-icon">✅</span>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="login-form"
+      aria-describedby="login-description"
+    >
+      <p id="login-description" class="sr-only">
+        Formulario de inicio de sesión con correo electrónico y contraseña.
+      </p>
+
+      <!-- MENSAJES DE ESTADO ACCESIBLES -->
+      <div
+        *ngIf="successMessage"
+        class="success-message"
+        role="status"
+        aria-live="polite"
+      >
+        <span class="success-icon" aria-hidden="true">✅</span>
         {{ successMessage }}
       </div>
 
-      <div *ngIf="error" class="error-message">
-        <span class="error-icon">⚠️</span>
+      <div
+        *ngIf="error"
+        class="error-message"
+        role="alert"
+        aria-live="assertive"
+      >
+        <span class="error-icon" aria-hidden="true">⚠️</span>
         {{ error }}
       </div>
 
+      <!-- CORREO -->
       <div class="form-group">
         <label for="email">Correo Electrónico</label>
         <div class="input-wrapper">
-          <span class="input-icon">📧</span>
+          <span class="input-icon" aria-hidden="true">📧</span>
           <input
             type="email"
             id="email"
@@ -29,17 +50,24 @@
             placeholder="tu@correo.com"
             class="form-input"
             [class.error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+            autocomplete="email"
+            aria-required="true"
           />
         </div>
-        <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="error-text">
+        <small
+          *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+          class="error-text"
+          role="alert"
+        >
           Por favor ingresa un email válido
         </small>
       </div>
 
+      <!-- CONTRASEÑA -->
       <div class="form-group">
         <label for="password">Contraseña</label>
         <div class="input-wrapper">
-          <span class="input-icon">🔒</span>
+          <span class="input-icon" aria-hidden="true">🔒</span>
           <input
             [type]="showPassword ? 'text' : 'password'"
             id="password"
@@ -47,46 +75,90 @@
             placeholder="••••••••"
             class="form-input"
             [class.error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+            autocomplete="current-password"
+            aria-required="true"
           />
-          <button type="button" class="toggle-password" (click)="togglePassword()">
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePassword()"
+            [attr.aria-pressed]="showPassword"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
             {{ showPassword ? '👁️‍🗨️' : '👁️' }}
           </button>
         </div>
-        <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error-text">
+        <small
+          *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+          class="error-text"
+          role="alert"
+        >
           La contraseña debe tener al menos 6 caracteres
         </small>
       </div>
 
+      <!-- OPCIONES -->
       <div class="form-options">
         <label class="checkbox">
-          <input type="checkbox" formControlName="remember" />
+          <input
+            type="checkbox"
+            formControlName="remember"
+            aria-label="Recordar este dispositivo para futuros inicios de sesión"
+          />
           <span>Recuerda este dispositivo</span>
         </label>
-        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        <a href="#" class="forgot-password">
+          ¿Olvidaste tu contraseña?
+        </a>
       </div>
 
-      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || loading">
+      <!-- BOTÓN PRINCIPAL -->
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="loginForm.invalid || loading"
+        [attr.aria-disabled]="loginForm.invalid || loading"
+        aria-label="Iniciar sesión en EcoHabit"
+      >
         <span *ngIf="!loading">Iniciar Sesión</span>
-        <span *ngIf="loading" class="loading-spinner">Cargando...</span>
+        <span *ngIf="loading" class="loading-spinner">
+          Cargando...
+        </span>
       </button>
     </form>
 
-    <div class="divider">O continúa con</div>
-    <div class="social-login">
-      <button class="social-btn google">
+    <div class="divider" aria-hidden="true">O continúa con</div>
+
+    <!-- SOCIAL LOGIN -->
+    <div
+      class="social-login"
+      aria-label="Opciones de inicio de sesión con redes sociales"
+      role="group"
+    >
+      <button
+        class="social-btn google"
+        type="button"
+        aria-label="Iniciar sesión con Google"
+      >
         <span>Google</span>
       </button>
-      <button class="social-btn github">
+      <button
+        class="social-btn github"
+        type="button"
+        aria-label="Iniciar sesión con GitHub"
+      >
         <span>GitHub</span>
       </button>
     </div>
 
     <div class="signup-link">
-      ¿No tienes cuenta? <a routerLink="/registro">Regístrate aquí</a>
+      ¿No tienes cuenta?
+      <a routerLink="/registro" aria-label="Ir a la página de registro de EcoHabit">
+        Regístrate aquí
+      </a>
     </div>
   </div>
 
-  <div class="decoration leaf-1">🍃</div>
-  <div class="decoration leaf-2">🍂</div>
+  <div class="decoration leaf-1" aria-hidden="true">🍃</div>
+  <div class="decoration leaf-2" aria-hidden="true">🍂</div>
 </div>
-

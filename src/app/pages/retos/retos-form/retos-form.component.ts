@@ -115,6 +115,7 @@ export class RetosFormComponent {
     } catch (e) {
       console.error('Error guardar() reto', e);
     }
+    this.router.navigateByUrl('/app/retos');
   }
 }
 

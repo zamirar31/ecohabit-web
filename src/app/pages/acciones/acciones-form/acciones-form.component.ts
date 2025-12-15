@@ -98,8 +98,6 @@ export class AccionesFormComponent {
       } else {
         await this.service.create(this.model);
       }
-
-      // Volver al panel de acciones dentro de /app
       this.router.navigateByUrl('/app/acciones');
     } catch (e) {
       console.error('Error guardar()', e);
