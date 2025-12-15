@@ -1,5 +1,5 @@
 <div class="retos-container">
-  
+
   <div class="retos-header">
     <div class="header-content">
       <h1>🏆 Retos Ecológicos</h1>
@@ -62,7 +62,7 @@
 
       <div class="reto-content">
         <h3 class="reto-name">{{ r.name }}</h3>
-        
+
         <p class="reto-description" *ngIf="r.description">
           {{ r.description }}
         </p>
@@ -74,17 +74,19 @@
           </div>
           <div class="info-item">
             <span class="info-label">Período:</span>
-            <span class="info-value">{{ r.startDate }} → {{ r.endDate }}</span>
+            <span class="info-value">
+              {{ r.startDate | date:'yyyy-MM-dd' }} → {{ r.endDate | date:'yyyy-MM-dd' }}
+            </span>
           </div>
         </div>
 
         <div class="progress-section">
           <div class="progress-label">
             <span>Progreso</span>
-            <span class="progress-percent">75%</span>
+            <span class="progress-percent">{{ getProgress(r) }}%</span>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" style="width: 75%"></div>
+            <div class="progress-fill" [style.width.%]="getProgress(r)"></div>
           </div>
         </div>
       </div>

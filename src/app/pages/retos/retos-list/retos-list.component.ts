@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { ChallengesService } from '../../../ services/challenges.service';
 import { Challenge } from '../../../models/challenge.model';
 
+type TabKey = 'todos' | 'activos' | 'completados' | 'proximos';
+
 @Component({
   selector: 'app-retos-list',
   standalone: true,

@@ -17,11 +17,11 @@ export class AccionesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.list().subscribe({
-      next: (rows) => {
-        console.log('Datos de Firestore:', rows);
+      next: (rows: Action[]) => {
+        console.log('Datos de Firestore (acciones):', rows);
         this.acciones = rows;
       },
-      error: (err) => console.error('Error list()', err)
+      error: (err: any) => console.error('Error list()', err)
     });
   }
 

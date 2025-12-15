@@ -1,14 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-panel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss']
 })
 export class PanelComponent implements OnInit {
+
   userStats = {
     points: 2450,
     challengesCompleted: 12,
@@ -45,7 +47,6 @@ export class PanelComponent implements OnInit {
   };
 
   ngOnInit(): void {
-
     console.log('Panel inicializado');
   }
 }
